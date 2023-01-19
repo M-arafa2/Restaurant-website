@@ -6,20 +6,26 @@ from .models import BookingModel,MenuModel
 from .serializers import Bookingerializer,MenuSerializer,UserSerliazer
 from django.contrib.auth.models import User
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
 
 # Create your views here.
 def test(request):
     return render(request,'index.html',{})
 
-class MenuItemsView(generics.ListCreateAPIView):
+class MenuItemsView(generics.ListAPIView):
     queryset = MenuModel.objects.all()
     serializer_class = MenuSerializer
     permission_classes = []
     
+class MenuItemsCreateView(generics.CreateAPIView):
+    queryset = MenuModel.objects.all()
+    serializer_class = MenuSerializer
+    permission_classes = [IsAdminUser]
+    
 class SingleMenuItem(generics.RetrieveUpdateAPIView,generics.DestroyAPIView):
     queryset = MenuModel.objects.all()
     serializer_class = MenuSerializer
+    permission_classes = [IsAdminUser]
 
 #class BookingView(APIView):
  #   def get(self,request):
@@ -37,6 +43,7 @@ class SingleMenuItem(generics.RetrieveUpdateAPIView,generics.DestroyAPIView):
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = BookingModel.objects.all()
     serializer_class = Bookingerializer    
+    permission_classes =[IsAuthenticatedOrReadOnly]
     
         
 class UserViewSet(viewsets.ModelViewSet):

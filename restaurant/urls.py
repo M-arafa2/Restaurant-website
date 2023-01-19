@@ -8,6 +8,6 @@ urlpatterns = [
     path('menu/',views.MenuItemsView.as_view()),
     path('menu/<int:pk>',views.SingleMenuItem.as_view()),
     path('api-token-auth/',obtain_auth_token),
-    
+    path('menunew/',views.MenuItemsCreateView.as_view()),
     
 ]
